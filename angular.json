@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "demo-pos566"
+  "defaultProject": "demo-pos566",
+  "cli": {
+    "analytics": "47047c80-f54d-415b-8bde-fe3aab389b67"
+  }
 }

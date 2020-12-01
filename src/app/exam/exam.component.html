@@ -1,0 +1,108 @@
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-9">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Name</th>
+						<th scope="col">Age</th>
+						<th scope="col">Action</th>
+
+					</tr>
+				</thead>
+				<tbody *ngIf="employees.length>0 else elseNodata">
+					<tr *ngFor="let item of employees let i= index" [formGroup]="empFormEdit">
+						<td>{{i+1 }}</td>
+						<td><span *ngIf="idEdit != item.id else elseHiddenName "> {{item.name}} </span>
+							<ng-template #elseHiddenName>
+								<input [value]="empFormEdit.value.name" formControlName="nameEdit" />
+								<div
+									*ngIf="empFormEdit.controls.nameEdit.invalid && (empFormEdit.controls.nameEdit.dirty || empFormEdit.controls.nameEdit.touched)"
+									class="alert alert-danger">
+
+									<div *ngIf="empFormEdit.controls.nameEdit.errors?.required">
+										Name is required.
+									</div>
+
+								</div>
+							</ng-template>
+						</td>
+						<td><span *ngIf="idEdit != item.id else elseHiddenAge"> {{item.age}} </span>
+							<ng-template #elseHiddenAge>
+								<input  formControlName="ageEdit" type="number" />
+
+								<div
+									*ngIf="empFormEdit.controls.ageEdit.invalid && (empFormEdit.controls.ageEdit.dirty || empFormEdit.controls.ageEdit.touched)"
+									class="alert alert-danger">
+
+									<div *ngIf="empFormEdit.controls.ageEdit.errors?.required">
+										Age is required.
+									</div>
+									<div *ngIf="empFormEdit.controls.ageEdit.errors?.max">
+										Age must be smaller than 100 .
+									</div>
+									<div *ngIf="empFormEdit.controls.ageEdit.errors?.min">
+										Age cannot be smaller than 0.
+									</div>
+								</div>
+							</ng-template>
+						</td>
+						<td><button *ngIf="idEdit != item.id else elseSave " (click)="edit(item.id)" class="btn btn-info mr-3">Edit</button>
+							<ng-template #elseSave>
+								<button (click)="save()" [disabled]="empFormEdit.invalid" class="btn btn-info mr-3"> save</button>
+							</ng-template>
+							<button (click)="delete(item.id)" class="btn btn-danger" >Delete</button>
+						</td>
+
+					</tr>
+				</tbody>
+				<ng-template #elseNodata>
+					<tfoot>
+
+						<h5>No data!</h5> 
+
+							
+					</tfoot>
+				</ng-template>
+			</table>
+		</div>
+		<div class="col-3">
+			<form [formGroup]="empForm" (ngSubmit)="onSubmit()" class="border p-2">
+
+
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type="text" name="name" id="name" class="form-control" formControlName="name" required>
+					<div *ngIf="empForm.controls.name.invalid && (empForm.controls.name.dirty || empForm.controls.name.touched)"
+						class="alert alert-danger">
+
+						<div *ngIf="empForm.controls.name.errors?.required">
+							Name is required.
+						</div>
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="age">Age:</label>
+					<input formControlName="age" type="number" name="age" id="age" class="form-control">
+					<div *ngIf="empForm.controls.age.invalid && (empForm.controls.age.dirty || empForm.controls.age.touched)"
+						class="alert alert-danger">
+
+						<div *ngIf="empForm.controls.age.errors?.required">
+							Age is required.
+						</div>
+						<div *ngIf="empForm.controls.age.errors?.max">
+							Age must be smaller than 100 .
+						</div>
+						<div *ngIf="empForm.controls.age.errors?.min">
+							Age cannot be smaller than 0.
+						</div>
+					</div>
+				</div>
+				<button type="submit" class=" btn btn-primary" >Add</button>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- [disabled]="empForm.invalid" -->
